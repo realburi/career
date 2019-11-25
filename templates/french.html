@@ -1,0 +1,81 @@
+<script src={{ url_for('static', filename="js/jquery.js" ) }}> </script>
+<script src={{ url_for('static', filename="js/bootstrap.js" ) }}></script>
+<script src={{ url_for('static', filename="js/popper.js" ) }}></script>
+<script src={{ url_for('static', filename="js/datatables.js" ) }}></script>
+<link rel="stylesheet" href={{url_for( "static", filename="css/bootstrap.css" )}}>
+<link rel="stylesheet" href={{url_for( "static", filename="css/dataTables.css" )}}>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Франц хэлний толь</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+<!--     <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('timetable')}}">Цаг нэмэх</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{url_for('index')}}"> Цагийн хүснэгт <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('meeters')}}">Уулзагсад</a>
+            </li>
+        </ul>
+    </div> -->
+</nav>
+
+<!-- nav -->
+
+<script type="text/javascript">
+    $(document).ready( function () {
+    $('#myTable').DataTable({
+        "lengthMenu": [[10, 20, 30, -1], [10, 20, 30, "Бүх"]],
+        "language": {
+            "lengthMenu": " _MENU_ мэдээллийг хуудсанд буулгах.",
+            "zeroRecords": "Юу ч олдсонгүй.",
+            "info": "Хуудас _PAGE_ / _PAGES_-г харуулж байна.",
+            "infoEmpty": "Мэдээлэл хоосон байна.",
+            "infoFiltered": "(Нийт _MAX_ ширхэг тэмдэглэлээс хайв.)",
+            "search" : 'Хайх',
+            "paginate": {
+                "previous": "Өмнөх",
+                'next': "Дараах"
+            }
+        },
+         fixedColumns: {
+        leftColumns: 2
+    }
+    });
+} );
+
+</script>
+
+<div class="container">
+    <br>
+    <table class="table table-hover text-center" id="myTable">
+  <thead>
+    <tr>
+        {% set table_header = 'Үг, Орчуулга, Жишээ, Дуудлага' %}
+        {% for th in table_header.split(',') %}
+      <th scope="col">{{ th }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for x in range(data|length) %}
+    <tr>
+      <th scope="row">{{ x + 1 }}</th>
+
+      {% for i in data[x] %}
+      <td>{{i}}</td>
+
+      {% endfor %}
+     
+    {% endfor %}
+
+    </tr>
+  </tbody>
+</table>
+</div>

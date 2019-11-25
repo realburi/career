@@ -1,0 +1,160 @@
+<script src={{ url_for('static', filename="js/jquery.js" ) }}> </script>
+<script src={{ url_for('static', filename="js/bootstrap.js" ) }}></script>
+<script src={{ url_for('static', filename="js/popper.js" ) }}></script>
+<script src={{ url_for('static', filename="js/datatables.js" ) }}></script>
+<link rel="stylesheet" href={{url_for( "static", filename="css/bootstrap.css" )}}>
+<link rel="stylesheet" href={{url_for( "static", filename="css/dataTables.css" )}}>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Карьер төв</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('timetable')}}">Цаг нэмэх</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{url_for('index')}}"> Цагийн хүснэгт <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('meeters')}}">Уулзагсад</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- nav -->
+
+<br>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <form method="POST" action="/redirect" style="border: 1px solid grey; padding: 20px">
+
+                    <div class="form-group row">
+                        <label for="name" class="col-4 col-form-label">Нэр</label>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"> <img src="{{ url_for('static', filename='img/id.png') }}" width="16px"></div>
+                                </div>
+                                <input id="name" name="name" type="text" class="form-control" required="required"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="surname" class="col-4 col-form-label">Овог</label>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">  <img src="{{ url_for('static', filename='img/id.png') }}" width="16px"> </div>
+                                </div>
+                                <input id="surname" name="surname" type="text" class="form-control" required="required"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="school" class="col-4 col-form-label">Сургууль</label>
+                        <div class="col-8">
+                            <select id="school" name="school" required="required" class="custom-select">
+                                <option value="ШМК">ШМК</option>
+                                <option value="ШМТДС">ШМТДС</option>
+                                <option value="ШМБДС">ШМБДС</option>
+                                <option value="Бусад">Бусад</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="kurs" class="col-4 col-form-label">Курс</label>
+                        <div class="col-8">
+                            <select id="kurs" name="kurs" class="custom-select" required="required" multiple="multiple">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="Бусад">Бусад</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="phone" class="col-4 col-form-label">Утасны дугаар</label>
+                        <div class="col-8">
+                            <input id="phone" name="phone" type="text" class="form-control" required="required"> </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">Mэргэжил</div>
+                        <div class="col-8">
+                            <div class="custom-controls-stacked">
+                                <div class="custom-control custom-radio" required="required">
+                                    <input name="radio" id="radio_0" type="radio" class="custom-control-input" value="ЦЭИ">
+                                    <label for="radio_0" class="custom-control-label">ЦЭИ</label>
+                                </div>
+                            </div>
+                            <div class="custom-controls-stacked">
+                                <div class="custom-control custom-radio">
+                                    <input name="radio" id="radio_1" type="radio" class="custom-control-input" value="МИ">
+                                    <label for="radio_1" class="custom-control-label">МИ</label>
+                                </div>
+                            </div>
+                            <div class="custom-controls-stacked">
+                                <div class="custom-control custom-radio">
+                                    <input name="radio" id="radio_2" type="radio" class="custom-control-input" value="БДБИ">
+                                    <label for="radio_2" class="custom-control-label">БДБИ</label>
+                                </div>
+                            </div>
+                            <div class="custom-controls-stacked">
+                                <div class="custom-control custom-radio">
+                                    <input name="radio" id="radio_3" type="radio" class="custom-control-input" value="ХИ">
+                                    <label for="radio_3" class="custom-control-label">ХИ</label>
+                                </div>
+                            </div>
+                            <div class="custom-controls-stacked">
+                                <div class="custom-control custom-radio">
+                                    <input name="radio" id="radio_4" type="radio" class="custom-control-input" value="Бусад">
+                                    <label for="radio_4" class="custom-control-label">Бусад</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="date" class="col-4 col-form-label">он.сар.өдөр</label>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">  <img src="{{ url_for('static', filename='img/calendar.png') }}" width="16px"></div>
+                                </div>
+                                <input name="date" type="date" class="form-control" required="required"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="date" class="col-4 col-form-label">Авах цаг</label>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">  <img src="{{ url_for('static', filename='img/time.png') }}" width="16px"></div>
+                                </div>
+                                <input name="clock" type="time" class="form-control" required="required"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-4 col-8">
+                            <button name="submit" type="submit" class="btn btn-primary" action="/h">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3">
+            </div>
+            <footer>
+                <br> hi :)
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>

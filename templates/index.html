@@ -1,0 +1,184 @@
+<script src={{ url_for('static', filename="js/jquery.js" ) }}> </script>
+<script src={{ url_for('static', filename="js/bootstrap.js" ) }}></script>
+<script src={{ url_for('static', filename="js/popper.js" ) }}></script>
+<script src={{ url_for('static', filename="js/datatables.js" ) }}></script>
+<link rel="stylesheet" href={{url_for( "static", filename="css/bootstrap.css" )}}>
+<link rel="stylesheet" href={{url_for( "static", filename="css/dataTables.css" )}}>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Карьер төв</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('timetable')}}">Цаг нэмэх</a>
+            </li>
+            <li class="nav-item  active">
+                <a class="nav-link" href="{{url_for('index')}}"> Цагийн хүснэгт <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('meeters')}}">Уулзагсад</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- nav -->
+<script type="text/javascript">
+	$(document).ready( function () {
+    $('#myTable').DataTable({
+        "lengthMenu": [[10, 20, 30, -1], [10, 20, 30, "Бүх"]],
+        "language": {
+            "lengthMenu": " _MENU_ мэдээллийг хуудсанд буулгах.",
+            "zeroRecords": "Юу ч олдсонгүй.",
+            "info": "Хуудас _PAGE_ / _PAGES_-г харуулж байна.",
+            "infoEmpty": "Мэдээлэл хоосон байна.",
+            "infoFiltered": "(Нийт _MAX_ ширхэг тэмдэглэлээс хайв.)",
+            "search" : 'Хайх',
+            "paginate": {
+      			"previous": "Өмнөх",
+      			'next': "Дараах"
+        	}
+        },
+         fixedColumns: {
+        leftColumns: 2
+    }
+    });
+} );
+
+</script>
+
+<div class="container">
+	<br>
+	<table class="table table-hover text-center" id="myTable">
+  <thead>
+    <tr>
+    	{% set table_header = '#, Нэр, Овог, Сургууль, Курс, Холбогдох утас, Мэргэжил, Огноо, Цаг, Үйлдэл' %}
+    	{% for th in table_header.split(',') %}
+      <th scope="col">{{ th }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for x in range(data|length) %}
+    <tr>
+      <th scope="row">{{ x + 1 }}</th>
+
+      {% for i in data[x] %}
+      <td>{{i}}</td>
+
+      {% endfor %}
+       <td>
+       	<button type="button" class="btn btn-success btn-sm" data-toggle="modal" value="0" data-toggle="modal" data-target="#exampleModalLong" id='button1' onclick="buri({{x}})">Уулзсан</button>
+       	<button type="button" class="btn btn-warning btn-sm" id='button2' value="1" onclick="alert('until next update :)')">Засах</button>
+        <button type="button" class="btn btn-danger btn-sm" id='button3' value="2" data-toggle="modal" data-toggle="modal" data-target="#exampleModalLong1" onclick="buri({{x}})">Цуцлах</button>
+
+       </td>	
+    {% endfor %}
+
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Баталгаажуулах</h5>
+        <button type="submit" value="submit" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{url_for('confirm')}}" id="modalForm" class="form form-group" method="POST" >
+         <div class="container">
+            {% set a = 'Нэр, Овог, Сургууль, Курс, Холбогдох утас, Мэргэжил, Огноо, Цаг' %}
+            {% for th in a.split(',') %}
+            <label>{{th}}</label> 
+            {% set count = 0 %}
+            <input class="form-control" type="text" name="{{th}}" id="{{a.split(',').index(th)}}" readonly>  
+            <br>
+            {% endfor %}
+         </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Хаах</button>
+        <button type="submit" value="submit" class="btn btn-success">Батлах</button>
+      </div>
+  }
+</form>
+
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
+
+function buri(b){
+  for(i=0;i<8;i++){
+    document.getElementById(i).value = ""; 
+    document.getElementById(i).innerHTML = "";
+    document.getElementById("a"+i).value = ""; 
+    document.getElementById("a"+i).innerHTML = "";
+  }
+  data = [];
+  var a = document.getElementsByTagName("table");
+  rows = a[0].rows[b+1].cells;
+
+  for(i=1;i<9;i++){
+    data.push(rows[i].innerHTML);
+  }
+
+  console.log(data);
+  for(i=0;i<8;i++){
+    document.getElementById('a'+i).value += data[i]
+    document.getElementById(i).value += data[i]
+    document.getElementById(i).innerHTML += data[i]
+    document.getElementById('a'+i).innerHTML += data[i]
+  } 
+} 
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Баталгаажуулах</h5>
+        <button type="submit" value="submit" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{url_for('delete')}}" id="modalForm" class="form form-group" method="POST" >
+         <div class="container">
+            {% set a = 'Нэр, Овог, Сургууль, Курс, Холбогдох утас, Мэргэжил, Огноо, Цаг' %}
+            {% for th in a.split(',') %}
+            <label>{{th}}</label> 
+            {% set count = 0 %}
+            <input class="form-control" type="text" name="{{th}}" id="a{{a.split(',').index(th)}}" readonly>  
+            <br>
+            {% endfor %}
+         </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Хаах</button>
+        <button type="submit" value="submit" class="btn btn-success">Батлах</button>
+      </div>
+  }
+</form>
+
+    </div>
+  </div>
+</div>
